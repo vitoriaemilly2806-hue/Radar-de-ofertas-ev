@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar de Ofertas</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f4fa;color:#20243a}
+header{background:#191d35;color:white;padding:22px}header h2{margin:0;color:#b9a5ff}header p{color:#c6c7d7;font-size:13px}
+.layout{display:flex;min-height:calc(100vh - 100px)}aside{width:230px;background:#202541;padding:15px}
+aside button{display:block;width:100%;text-align:left;padding:13px;margin:4px 0;border:0;border-radius:8px;background:transparent;color:white;font-size:14px;cursor:pointer}
+aside button.active,aside button:hover{background:#51418a}main{flex:1;padding:24px;min-width:0}h1{font-size:25px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card,.panel{background:white;padding:18px;border-radius:12px;margin-bottom:18px;box-shadow:0 3px 12px #00000008}
+.card small{color:#777}.card strong{display:block;font-size:27px;margin-top:10px}.panel h3{margin-top:0}
+input,select{width:100%;padding:12px;margin:7px 0 15px;border:1px solid #ddd;border-radius:7px;font-size:15px}
+label{font-size:13px;font-weight:bold}.primary{background:#7055d9;color:white;border:0;border-radius:8px;padding:12px 18px;font-weight:bold;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:12px 6px;text-align:left;border-bottom:1px solid #eee;overflow-wrap:anywhere}th{color:#777}
+.empty{color:#888;padding:18px 0}.notice{background:#f0edff;color:#5947a0;padding:14px;border-radius:8px;line-height:1.6}.hidden{display:none}
+@media(max-width:750px){.layout{display:block}aside{width:100%;display:flex;overflow-x:auto;padding:8px}aside button{white-space:nowrap;width:auto}main{padding:14px}.cards{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><h2>⚡ RADAR DE OFERTAS</h2><p>Sua central de gerenciamento de promoções</p></header>
+<div class="layout">
+<aside id="menu">
+<button class="active" data-page="inicio">▦ Visão geral</button><button data-page="produtos">▣ Produtos</button><button data-page="ofertas">🔥 Ofertas</button><button data-page="afiliados">♧ Afiliados</button><button data-page="grupos">◉ Grupos e canais</button><button data-page="cupons">％ Cupons</button><button data-page="agenda">◷ Agendamentos</button><button data-page="automacoes">⚙ Automações</button><button data-page="relatorios">▤ Relatórios</button><button data-page="config">⚙ Configurações</button>
+</aside>
+<main>
+<section id="inicio"><h1>Visão geral</h1><p>Bem-vindo ao seu painel administrativo!</p>
+<div class="cards"><div class="card"><small>Produtos</small><strong id="totalProdutos">0</strong></div><div class="card"><small>Ofertas</small><strong id="totalOfertas">0</strong></div><div class="card"><small>Afiliados</small><strong id="totalAfiliados">0</strong></div><div class="card"><small>Grupos</small><strong id="totalGrupos">0</strong></div></div>
+<div class="panel"><h3>Comece por aqui</h3><p>Cadastre produtos, organize ofertas e prepare canais de divulgação.</p><button class="primary" onclick="abrir('produtos')">Cadastrar produto</button></div><div class="panel"><h3>Últimos produtos</h3><div id="recentes" class="empty">Nenhum produto cadastrado.</div></div></section>
+<section id="produtos" class="hidden"><h1>Produtos</h1><div class="panel"><h3>Cadastrar produto</h3><form id="formProduto"><label>Nome do produto</label><input name="nome" required placeholder="Ex.: Fone Bluetooth"><label>Preço</label><input name="preco" placeholder="Ex.: R$ 59,90"><label>Marketplace</label><select name="loja"><option>Shopee</option><option>Amazon</option><option>Magalu</option><option>Outro</option></select><label>Link de afiliado</label><input name="link" type="url" placeholder="https://..."><button class="primary">Salvar produto</button></form></div><div class="panel"><h3>Produtos cadastrados</h3><div id="listaProdutos"></div></div></section>
+<section id="ofertas" class="hidden"><h1>Ofertas</h1><div class="panel"><h3>Cadastrar oferta</h3><form id="formOferta"><label>Nome da oferta</label><input name="nome" required><label>Preço promocional</label><input name="preco" placeholder="R$ 39,90"><label>Link da oferta</label><input name="link" type="url" placeholder="https://..."><button class="primary">Salvar oferta</button></form></div><div class="panel"><h3>Ofertas cadastradas</h3><div id="listaOfertas"></div></div></section>
+<section id="afiliados" class="hidden"><h1>Afiliados</h1><div class="panel"><h3>Cadastrar afiliado</h3><form id="formAfiliado"><label>Nome</label><input name="nome" required><label>Marketplace</label><select name="loja"><option>Shopee</option><option>Amazon</option><option>Magalu</option><option>Outro</option></select><button class="primary">Salvar afiliado</button></form></div><div class="panel"><h3>Afiliados cadastrados</h3><div id="listaAfiliados"></div></div></section>
+<section id="grupos" class="hidden"><h1>Grupos e canais</h1><div class="panel"><h3>Cadastrar grupo</h3><form id="formGrupo"><label>Nome do grupo</label><input name="nome" required><label>Plataforma</label><select name="plataforma"><option>Telegram</option><option>WhatsApp</option></select><label>Link do grupo</label><input name="link" type="url"><button class="primary">Salvar grupo</button></form></div><div class="panel"><h3>Grupos cadastrados</h3><div id="listaGrupos"></div></div></section>
+<section id="cupons" class="hidden"><h1>Cupons</h1><div class="panel"><h3>Cadastrar cupom</h3><form id="formCupom"><label>Código do cupom</label><input name="nome" required><label>Desconto</label><input name="desconto" placeholder="10%"><button class="primary">Salvar cupom</button></form></div><div class="panel"><h3>Cupons cadastrados</h3><div id="listaCupons"></div></div></section>
+<section id="agenda" class="hidden"><h1>Agendamentos</h1><div class="panel"><div class="notice">Nesta etapa vamos preparar o calendário e o agendamento real das publicações. A conexão com os canais será implementada depois.</div></div></section>
+<section id="automacoes" class="hidden"><h1>Automações</h1><div class="panel"><div class="notice">Central para automatizar ofertas, produtos, Telegram, WhatsApp e marketplaces. As integrações reais serão adicionadas nas próximas etapas.</div></div></section>
+<section id="relatorios" class="hidden"><h1>Relatórios</h1><div class="panel"><div class="notice">Aqui ficarão os resultados de publicações, ofertas, cliques e desempenho.</div></div></section>
+<section id="config" class="hidden"><h1>Configurações</h1><div class="panel"><label>Nome do site</label><input id="nomeSite" value="Radar de Ofertas"><button class="primary" onclick="document.title=document.getElementById('nomeSite').value;alert('Nome atualizado!')">Salvar</button></div></section>
+</main></div>
+<script>
+const chaves={produtos:"radar_produtos",ofertas:"radar_ofertas",afiliados:"radar_afiliados",grupos:"radar_grupos",cupons:"radar_cupons"};let dados={};
+Object.keys(chaves).forEach(k=>{try{dados[k]=JSON.parse(localStorage.getItem(chaves[k]))||[]}catch(e){dados[k]=[]}});
+function abrir(id){document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll("#menu button").forEach(b=>b.classList.toggle("active",b.dataset.page===id))}
+document.querySelectorAll("#menu button").forEach(b=>b.addEventListener("click",()=>abrir(b.dataset.page)));
+function seguro(v){return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function tabela(lista){if(!lista.length)return '<p class="empty">Nenhum cadastro ainda.</p>';return '<table><tr><th>Nome</th><th>Informações</th></tr>'+lista.map(x=>'<tr><td>'+seguro(x.nome)+'</td><td>'+seguro(x.info||"—")+'</td></tr>').join("")+'</table>'}
+function salvar(tipo,item){dados[tipo].push(item);localStorage.setItem(chaves[tipo],JSON.stringify(dados[tipo]));atualizar()}
+function formulario(id,tipo,criar){document.getElementById(id).addEventListener("submit",e=>{e.preventDefault();const f=new FormData(e.target);salvar(tipo,criar(f));e.target.reset();alert("Cadastro salvo!")})}
+formulario("formProduto","produtos",f=>({nome:f.get("nome"),info:f.get("loja")+" • "+f.get("preco"),link:f.get("link")}));
+formulario("formOferta","ofertas",f=>({nome:f.get("nome"),info:f.get("preco"),link:f.get("link")}));
+formulario("formAfiliado","afiliados",f=>({nome:f.get("nome"),info:f.get("loja")}));
+formulario("formGrupo","grupos",f=>({nome:f.get("nome"),info:f.get("plataforma"),link:f.get("link")}));
+formulario("formCupom","cupons",f=>({nome:f.get("nome"),info:f.get("desconto")}));
+function atualizar(){const nomes={produtos:"Produtos",ofertas:"Ofertas",afiliados:"Afiliados",grupos:"Grupos",cupons:"Cupons"};Object.keys(nomes).forEach(k=>document.getElementById("lista"+nomes[k]).innerHTML=tabela(dados[k]));document.getElementById("totalProdutos").textContent=dados.produtos.length;document.getElementById("totalOfertas").textContent=dados.ofertas.length;document.getElementById("totalAfiliados").textContent=dados.afiliados.length;document.getElementById("totalGrupos").textContent=dados.grupos.length;document.getElementById("recentes").innerHTML=dados.produtos.length?dados.produtos.slice(-5).reverse().map(x=>"📦 "+seguro(x.nome)).join("<br>"):"Nenhum produto cadastrado."}
+atualizar();
+</script>
+</body>
+</html>
